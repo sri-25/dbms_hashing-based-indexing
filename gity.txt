@@ -1,0 +1,253 @@
+#include <stdio.h>
+  #include <string.h>
+  #include <stdlib.h>
+
+  struct hash *hashTable = NULL;
+  int eleCount = 0;
+
+  struct node {
+        int roomno, age;
+        char name[100];
+        struct node *next;
+  };
+
+  struct hash {
+        struct node *head;
+        int count;
+  };
+
+  struct node * createNode(int roomno, char *name, int age) {
+        struct node *newnode;
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->roomno = roomno;
+        newnode->age = age;
+        strcpy(newnode->name, name);
+        newnode->next = NULL;
+        return newnode;
+  }
+
+
+  void insertToHash(int roomno, char *name, int age) {
+        int hashIndex = roomno % eleCount;
+        struct node *newnode =  createNode(roomno, name, age);
+        /* head of list for the bucket with index "hashIndex" */
+        if (!hashTable[hashIndex].head) {
+                hashTable[hashIndex].head = newnode;
+                hashTable[hashIndex].count = 1;
+                return;
+        }
+        /* adding new node to the list */
+        newnode->next = (hashTable[hashIndex].head);
+        /*
+         * update the head of the list and no of
+         * nodes in the current bucket
+         */
+        hashTable[hashIndex].head = newnode;
+        hashTable[hashIndex].count++;
+        return;
+  }
+
+
+  void deleteFromHash(int roomno) {
+        /* find the bucket using hash index */
+        int hashIndex = roomno % eleCount, flag = 0;
+        struct node *temp, *myNode;
+        /* get the list head from current bucket */
+        myNode = hashTable[hashIndex].head;
+        if (!myNode) {
+                printf("Given data is not present in hash Table!!\n");
+                return;
+        }
+        temp = myNode;
+        while (myNode != NULL) {
+                /* delete the node with given roomno */
+                if (myNode->roomno == roomno) {
+                        flag = 1;
+                        if (myNode == hashTable[hashIndex].head)
+                                hashTable[hashIndex].head = myNode->next;
+                        else
+                                temp->next = myNode->next;
+
+                        hashTable[hashIndex].count--;
+                        free(myNode);
+                        break;
+                }
+                temp = myNode;
+                myNode = myNode->next;
+        }
+        if (flag)
+                printf("Data deleted successfully from Hash Table\n");
+        else
+                printf("Given data is not present in hash Table!!!!\n");
+        return;
+  }
+
+  void searchInHash(int roomno) {
+        int hashIndex = roomno % eleCount, flag = 0;
+        struct node *myNode;
+        myNode = hashTable[hashIndex].head;
+        if (!myNode) {
+                printf("Search element unavailable in hash table\n");
+                return;
+        }
+        while (myNode != NULL) {
+                if (myNode->roomno == roomno) {
+                        printf("roomno : %d\n", myNode->roomno);
+                        printf("Name     : %s\n", myNode->name);
+                        printf("Age      : %d\n", myNode->age);
+                        flag = 1;
+
+                }
+                myNode = myNode->next;
+        }
+        if (!flag)
+                printf("Search element unavailable in hash table\n");
+        return;
+  }
+
+  void display() {
+        struct node *myNode;
+        int i;
+        for (i = 0; i < eleCount; i++) {
+                if (hashTable[i].count == 0)
+                        continue;
+                myNode = hashTable[i].head;
+                if (!myNode)
+                        continue;
+                printf("\nData at index %d in Hash Table:\n", i);
+                printf("roomno     Name          Age   \n");
+                printf("--------------------------------\n");
+                while (myNode != NULL) {
+                        printf("%d", myNode->roomno);
+                        printf("%-15s", myNode->name);
+                        printf("%d\n", myNode->age);
+
+                        myNode = myNode->next;
+                }
+        }
+        return;
+  }
+
+  int main() {
+        int n, ch, roomno, age;
+        char name[100];
+        char regno[100];
+        printf("Enter the size of hash table:");
+        scanf("%d", &n);
+        eleCount = n;
+        /* create hash table with "n" no of buckets */
+        hashTable = (struct hash *)calloc(n, sizeof (struct hash));
+        while (1) {
+                printf("\n1. Insertion\t2. Deletion\n");
+                printf("3. Searching\t4. Display\n5. Exit\n");
+                printf("Enter your choice:");
+                scanf("%d", &ch);
+                insertToHash(290,"Srijan",19);
+                            insertToHash(777,"Sushabh",19);
+                            insertToHash(111, "mainsh",20);
+                            insertToHash(222,"ayush",20);
+                            insertToHash(333,"shelly",19);
+                            insertToHash(444,"monica",19);
+                            insertToHash(105,"shreya",19);
+                            insertToHash(106,"akshat",19);
+                            insertToHash(108,"rahul",20);
+                            insertToHash(109,"archit",20);
+                            insertToHash(110,"rishabh",20);
+                            insertToHash(111,"ganesh",20);
+                            insertToHash(112,"shuhaas",18);
+                            insertToHash(113,"paaji",21);
+                            insertToHash(114,"pankaj",20);
+                            insertToHash(115,"happy",19);
+                            insertToHash(116,"niharika",20);
+                            insertToHash(117,"shaurya",19);
+                            insertToHash(118,"umang",20);
+                            insertToHash(119,"kritika",19);
+                            insertToHash(120,"kanika",20);
+                            insertToHash(121,"dhruv",19);
+                            insertToHash(122,"saurabh",20);
+                            insertToHash(123,"harsh",21);
+                            insertToHash(124,"yash",19);
+                            insertToHash(125,"tushar",19);
+                            insertToHash(126,"himani",20);
+                            insertToHash(127,"himanshu",19);
+                            insertToHash(128,"lochan",19);
+                            insertToHash(129,"rohit",20);
+                            insertToHash(130,"rohan",21);
+                            insertToHash(131,"divy",21);
+                            insertToHash(132,"roshni",20);
+                            insertToHash(133,"himani",20);
+                            insertToHash(134,"ishani",18);
+                            insertToHash(135,"bhumika",19);
+                            insertToHash(136,"aisha",18);
+                            insertToHash(137,"charu",19);
+                            insertToHash(138,"krati",20);
+                            insertToHash(139,"onkar",20);
+                            insertToHash(140,"lakshit",20);
+                            insertToHash(141,"isha",20);
+                            insertToHash(142,"trisha",19);
+                            insertToHash(143,"ushus",21);
+                            insertToHash(144,"pankaj",20);
+                            insertToHash(145,"manisha",20);
+                            insertToHash(146,"prerna",19);
+                            insertToHash(147,"kajal",18);
+                            insertToHash(148,"koyal",19);
+                            insertToHash(149,"priyanka",20);
+                            insertToHash(149,"ojaswi",20);
+                            insertToHash(148,"radha",21);
+                            insertToHash(147,"shelly",20);
+                            insertToHash(143,"meenal",21);
+                            insertToHash(144,"dhruv",20);
+                            insertToHash(142,"mayank",19);
+                            insertToHash(129,"firoz",20);
+                            insertToHash(111,"tajinder",19);
+                            insertToHash(112,"hiral",20);
+                            insertToHash(113,"rahul",19);
+                            insertToHash(114,"koyal",19);
+                            insertToHash(115,"kirti",20);
+                            insertToHash(116,"lokesh",20);
+                            insertToHash(118,"ram",19);
+                            insertToHash(119,"duke",20);
+                            insertToHash(122,"saloni",19);
+                            insertToHash(130,"harsh",20);
+                            insertToHash(131,"poorvi",20);
+                            insertToHash(138,"pranjal",20);
+                            insertToHash(140,"kajal",19);
+
+                switch (ch) {
+                        case 1:
+                            printf("Enter the roomno:");
+                                scanf("%d", &roomno);
+                                getchar();
+                                printf("Name:");
+                                fgets(name, 100, stdin);
+                                name[strlen(name) - 1] = '\0';
+                                printf("Age:");
+                                scanf("%d", &age);
+                                /*inserting new node to hash table */
+                                insertToHash(roomno, name, age);
+
+                                break;
+                        case 2:
+                                printf("Enter the roomno to perform deletion:");
+                                scanf("%d", &roomno);
+                                /* delete node with "roomno" from hash table */
+                                deleteFromHash(roomno);
+                                break;
+
+                        case 3:
+                                printf("Enter the roomno to search:");
+                                scanf("%d", &roomno);
+                                searchInHash(roomno);
+                                break;
+                        case 4:
+                                display();
+                                break;
+                        case 5:
+                                exit(0);
+                        default:
+                                printf("U have entered wrong option!!\n");
+                                break;
+                }
+        }
+        return 0;
+  }
